@@ -1,0 +1,32 @@
+---
+# A whale file is a YAML list of docker images to build.
+- # The name of the image to build.
+  name: 'example_basic'
+  # The org name on dockerhub. Optional, some repos don't need this.
+  org: 'whaleproject'
+  # Tag in the dockerhub sense.
+  # Full path on dockerhub is like: org/name:tag
+  # Other repos might work differently...
+  tag: 'latest'
+  # Basis image. We encourage that this is a public image.
+  from: 'phusion/baseimage:0.11'
+  # Build contains a list of build steps. Each step can potentially be complex.
+  build:
+    - # Description of the build step. This is only used for documentation and debugging.
+      desc: 'Install nginx so we have something to look at for our example.'
+      # "run" is an example of a build action. Each build step can only have one action.
+      # Specifying more than one action in a single step will result in a build error.
+      # Different actions take different inputs. Run CAN take a simple string.
+      # However if needed run can also take more complex input in order to override default behaviors.
+      run: 'install_clean nginx'
+    - desc: 'Copy a basic hello world webpage for us to admire.'
+      # As you can see "copy" takes a dictionary as input.
+      # Only the "src" and "dest" params are required.
+      # The root directory to copy from is actually the "files/" directory similar to ansible.
+      # If this step is implemented inside a role, it will be the "files/" directory inside that role.
+      copy:
+        src: 'helloworld.html'
+        dest: '/var/www/html/index.html'
+        user: 'www-data'
+        group: 'www-data'
+        perms: '644'

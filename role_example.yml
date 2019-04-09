@@ -1,0 +1,9 @@
+---
+- name: 'example_php_nginx_redis'
+  org: 'whaleproject'
+  tag: 'latest'
+  from: 'phusion/baseimage:0.11'
+  build:
+    - role: 'nginx'
+    - role: 'php'
+    - role: 'redis'
